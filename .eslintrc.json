@@ -1,0 +1,23 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2022, // or higher depending on your needs
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "es2021": true,
+    "browser": true,
+    "commonjs": true
+  },
+  "extends": ["plugin:react/recommended", "prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"]
+  },
+  "settings": {
+    "react": {
+      "version": "detect" 
+    }
+}
