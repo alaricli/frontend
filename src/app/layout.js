@@ -4,11 +4,11 @@ import FooterContainer from '@/components/Footer/FooterContainer';
 
 function RootLayout({ children }) {
   return (
-    <div>
-      <Header />
-      <main className="flex-grow">{children}</main>
-      <FooterContainer />
-    </div>
+      <div>
+        <Header />
+          <main className="flex-grow">{children}</main>
+        <FooterContainer />
+      </div>
   );
 }
 
