@@ -1,14 +1,14 @@
 import '../styles/globals.css';
-import Header from "@/components/Header";
+import Header from "@/components/Header/Header";
 import FooterContainer from '@/components/Footer/FooterContainer';
 
 function RootLayout({ children }) {
   return (
-      <div>
-        <Header />
-          <main className="flex-grow">{children}</main>
-        <FooterContainer />
-      </div>
+    <div>
+      <Header />
+        <main className="flex-grow">{children}</main>
+      <FooterContainer />
+    </div>
   );
 }
 
