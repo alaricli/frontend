@@ -1,5 +1,28 @@
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+
+const addToCart = async (productId) => {
+  let cartId = localStorage.getItem('cartId');
+
+  if (!cartId) {
+    try {
+      const cartRes = await axios.post('http://localhost:8000/cart/create');
+      cartId = cartRes.data.cartId;
+      localStorage.setItem('cartId', cartId);
+    } catch (error) {
+      console.error('Failed to create cart', error);
+      return;
+    }
+  }
+
+  try {
+    await axios.post('http://localhost:8000/cart/${cartId}/add', { productId });
+    console.log( ' ${ productId } added to cart');
+  } catch (error) {
+    console.error("Failed to add to cart", error);
+  }
+};
 
 export async function getServerSideProps() {
   try {
@@ -44,12 +67,12 @@ const Shop = ({ products }) => {
                 <span class="text-2xl font-bold text-gray-900 dark:text-white">
                   {`$${product.price}`}
                 </span>
-                <a
-                  href="/"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                <button
+                  onClick={() => addToCart(product.id)}
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Add to cart
-                </a>
+                </button>
               </div>
             </div>
           </div>
