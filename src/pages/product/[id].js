@@ -1,3 +1,4 @@
+import AddToCartButton from '@/components/addToCartBtn';
 import axios from 'axios';
 
 const ProductPage = ({ product }) => {
@@ -7,7 +8,7 @@ const ProductPage = ({ product }) => {
       <img src={product.picUrl} alt={product.name} />
       <p>Price: ${product.price}</p>
       {/* <p>Description: {product.description}</p> */}
-      <button>Add to Cart</button>
+      <AddToCartButton productId={product.id} />
     </div>
   );
 };
