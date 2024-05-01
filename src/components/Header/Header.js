@@ -4,6 +4,7 @@ import SearchBox from './SearchBox';
 import HeaderCart from './HeaderCart';
 import Geography from './Geography';
 import HeaderAccount from './HeaderAccount';
+import TempCartBtn from './TempCartBtn';
 
 function Header() {
   return (
@@ -19,6 +20,7 @@ function Header() {
       <div className="flex justify-end items-center space-x-4">
         <SearchBox />
         <HeaderAccount />
+        <TempCartBtn />
         <HeaderCart />
         <Geography />
       </div>
