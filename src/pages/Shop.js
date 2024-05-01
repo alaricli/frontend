@@ -41,8 +41,8 @@ const Shop = ({ products }) => {
                 </h2>
               </Link>
 
-              <div class="flex items-center justify-between">
-                <span class="text-2xl font-bold text-gray-900 dark:text-white">
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">
                   {`$${product.price}`}
                 </span>
                 <AddToCartButton productId={product.id} />

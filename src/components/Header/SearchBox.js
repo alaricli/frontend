@@ -8,7 +8,7 @@ function SearchBox() {
       />
       <button type="button" className="px-4 py-2">
         <svg
-          class="w-6 h-6 text-gray-800"
+          className="w-6 h-6 text-gray-800"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
