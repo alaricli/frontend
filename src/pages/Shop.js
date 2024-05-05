@@ -36,12 +36,13 @@ const Shop = ({ products }) => {
 
             <div className="p-4">
               <Link href={`/product/${product.id}`} passHref>
-                <h2 className="text-center text-lg font-bold dark:text-white">
+                <h2 className="text-center text-lg font-bold dark:text-white mb-2">
                   {product.name}
                 </h2>
               </Link>
 
               <div className="flex items-center justify-between">
+                {/* display price based on size selected */}
                 <span className="text-2xl font-bold text-gray-900 dark:text-white">
                   {`$${product.price}`}
                 </span>
