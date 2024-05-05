@@ -12,8 +12,8 @@ function Checkout() {
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    // change the amount to a get request to get the cartTotal
-    axios.post('http://localhost:8000/checkout/payment-intent', { amount: 2000 })
+    // TODO: change the amount to a get request to get the cartTotal
+    axios.post('http://localhost:8000/stripe/create-payment-intent', { amount: 2000 })
       .then(response => {
         setClientSecret(response.data);
       })

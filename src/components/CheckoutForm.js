@@ -24,17 +24,24 @@ const CheckoutForm = () => {
       console.log('[error]', error);
     } else {
       console.log('[PaymentMethod]', paymentMethod);
-      // TODO: send paymentmethod.id to server for processing
-      // use axios
-      const response = await fetch('http://localhost:8000/checkout/payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ paymentMethodId: paymentMethod.id }),
-      });
-      const paymentResult = await response.json();
-      console.log(paymentResult);
+      // TODO: implement send paymentmethod.id to server for processing
+      try {
+        const response = await axios.post(
+          'http://localhost:8000/stripe/create-payment-request',
+          {
+            paymentMethodId: paymentMethod.id,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        const paymentMethodRes = response.data;
+        console.log(paymentMethodRes);
+      } catch (error) {
+        console.error('Error occurred while posting paymentMethod', error);
+      }
     }
   };
 
