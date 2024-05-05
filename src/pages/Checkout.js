@@ -1,77 +1,45 @@
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
+import CheckoutForm from "@/components/CheckoutForm";
+import { Elements, useElements, useStripe } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+const stripePromise = loadStripe(
+  'pk_test_51PBPQJLQCW5U5NqDLdP7NVHZL5jTYkPR1x5wk6fYoMfDD0qiNxcbULHIhxojxcyvHyrkkgEw4SfrRk7zNZVxVg5s00t1MpXvLQ'
+);
 
 function Checkout() {
-  const stripe = useStripe();
-  const elements = useElements();
+  const [clientSecret, setClientSecret] = useState('');
 
-  const cardStyle = {
-    style: {
-      base: {
-        color: 'white',
-        backgroundColor: 'transparent',
-        fontFamily: 'Arial, sans-serif',
-        fontSize: '16px',
-        '::placeholder': {
-          color: 'gray',
-        },
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a',
-      },
-    },
+  useEffect(() => {
+    // change the amount to a get request to get the cartTotal
+    axios.post('http://localhost:8000/checkout/payment-intent', { amount: 2000 })
+      .then(response => {
+        setClientSecret(response.data);
+      })
+      .catch(error => {
+        console.error("Error creating payment intent", error);
+      });
+  }, []);
+
+  const options = {
+    clientSecret,
+    appearance: { theme: 'stripe' },
   };
 
-  const handleCheckout = async (event) => {
-    event.preventDefault();
-
-    if (!stripe || !elements ) {
-      console.log("Stripe has not loaded yet.");
-      return;
-    }
-
-    const cardElement = elements.getElement(CardElement);
-
-    const {error, paymentMethod} = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
-    });
-
-    if (error) {
-      console.log('[error]', error);
-    } else {
-      console.log('[PaymentMethod]', paymentMethod);
-      // send paymentmethod.id to server for processing
-      const response = await fetch('http://localhost:8000/checkout/payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ paymentMethodId: paymentMethod.id }),
-      });
-      const paymentResult = await response.json();
-      console.log(paymentResult);
-    }
+  if (!clientSecret) {
+    return <div>
+      Loading...
+    </div>
   };
 
   return (
-    <div className="bg-gray-800 p-8 rounded-lg max-w-md mx-auto mt-10 text-white">
-      <h1 className="text-2xl font-semibold mb-6">Checkout</h1>
-      <form onSubmit={handleCheckout} className="space-y-6">
-        <h2 className="text-xl">Your Cart Items</h2>
-        <div>Item 1</div>
-        <div>Item 2</div>
-        <div>Total: $100</div>
-
-        <h2 className="text-xl">Payment Details</h2>
-        <div className="bg-gray-900 p-4 rounded">
-          <CardElement options={cardStyle} />
-        </div>
-        <button type="submit" disabled={!stripe}>
-          Submit Payment
-        </button>
-      </form>
-    </div>
+    <Elements stripe={stripePromise} options={options}>
+      <div className="bg-gray-800 p-8 rounded-lg max-w-md mx-auto mt-10 text-white">
+        <h1 className="text-2xl font-semibold mb-6">Checkout</h1>
+        <CheckoutForm />
+      </div>
+    </Elements>
   );
 }
 
