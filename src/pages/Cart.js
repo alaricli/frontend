@@ -14,9 +14,9 @@ const Cart = () => {
         if (cartId) {
           try {
             const cart = await axios.get(
-              `http://localhost:8000/cart/${cartId}/get-cart`
+              `http://localhost:8000/cart/${cartId}/get`
             );
-            setCartItems(cart.data.cartItems);
+            setCartItems(cart.data.items);
           } catch (itemsError) {
             console.error('Failed to fetch cartitems', itemsError);
             setCartTotal([]);
@@ -41,15 +41,22 @@ const Cart = () => {
   return (
     <div>
       <div className="text-xl">Cart - Total Items: {cartTotal}</div>
-      {/* <div>
-        {cartItems.map((item) => (
-
-        ))}
-      </div> */}
       {cartItems.length > 0 ? (
-        <div>
-          Render cart items here
-        </div>
+        <>
+          {cartItems.map((item) => (
+            <div key={item.id} className="mb-4">
+              <h3>Product: {item.productName}</h3>
+              <p>Size: {item.size}</p>
+              {/* TODO: scale it so you can change the quantity here */}
+              <p>Quantity: {item.quantity}</p>
+              <p>Price: {item.price}</p>
+              <p>Total: ${(item.quantity * item.price).toFixed(2)}</p>
+            </div>
+          ))}
+          <div>
+            Grand Total: ${cartTotal}
+          </div>
+        </>
       ) : (
         <p>Your cart is empty</p>
       )}

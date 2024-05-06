@@ -16,6 +16,24 @@ const AddToCartButton = ({ productId, size, price }) => {
     console.log('quantity selected:', quantity);
     console.log('total price:', price);
 
+    // Verify the existing cart's integrity
+    if (cartId) {
+      try {
+        const cartValidationResult = await axios.get(
+          `http://localhost:8000/cart/${cartId}/validate-cart`
+        );
+        if (!cartValidationResult.data.exists) {
+          console.log('Cart does not exist, creating a new cart');
+          cartId = null;
+        }
+        console.log('using existing cart:', cartId);
+      } catch (error) {
+        console.log('Cart invalid, creating a new cart');
+        cartId = null;
+      }
+    }
+
+    // create a new cart if no cart is found
     if (!cartId) {
       try {
         const cartRes = await axios.post(
@@ -38,8 +56,8 @@ const AddToCartButton = ({ productId, size, price }) => {
       await axios.post(`http://localhost:8000/cart/${cartId}/add`, { 
         productId, 
         size, 
-        quantity, 
-        price});
+        price,
+        quantity});
       console.log(`${productId} added to cart`);
     } catch (error) {
       console.error("Failed to add to cart", error);
