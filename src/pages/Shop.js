@@ -1,10 +1,9 @@
-import AddToCartButton from '@/components/addToCartBtn';
 import axios from 'axios';
 import Link from 'next/link';
 
 export async function getServerSideProps() {
   try {
-    const res = await axios.get('http://localhost:8000/product/get');
+    const res = await axios.get('http://localhost:8000/product/getAll');
     const products = res.data;
     return { props: { products } };
   } catch (error) {
@@ -42,11 +41,9 @@ const Shop = ({ products }) => {
               </Link>
 
               <div className="flex items-center justify-between">
-                {/* display price based on size selected */}
-                <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {`$${product.price}`}
+                <span className="text-xl font-bold text-gray-900 dark:text-white">
+                  {`from $${product.prices[0]}`}
                 </span>
-                <AddToCartButton productId={product.id} />
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-const AddToCartButton = ({ productId }) => {
+const AddToCartButton = ({ productId, size, price }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -11,12 +11,19 @@ const AddToCartButton = ({ productId }) => {
     setError(null);
     let cartId = localStorage.getItem('cartId');
 
+    console.log("productId selected:", productId);
+    console.log('size selected:', size);
+    console.log('quantity selected:', quantity);
+    console.log('total price:', price);
+
     if (!cartId) {
       try {
-        const cartRes = await axios.post('http://localhost:8000/cart/createCart');
+        const cartRes = await axios.post(
+          'http://localhost:8000/cart/create-cart'
+        );
         cartId = cartRes.data.cartId;
         localStorage.setItem('cartId', cartId);
-        console.log('cartId:', cartId)
+        console.log('new cart created with id: ', cartId)
       } catch (error) {
         console.error('Failed to create cart', error);
         setError('Failed to create cart');
@@ -28,7 +35,11 @@ const AddToCartButton = ({ productId }) => {
     }
 
     try {
-      await axios.post(`http://localhost:8000/cart/${cartId}/add`, { productId, quantity });
+      await axios.post(`http://localhost:8000/cart/${cartId}/add`, { 
+        productId, 
+        size, 
+        quantity, 
+        price});
       console.log(`${productId} added to cart`);
     } catch (error) {
       console.error("Failed to add to cart", error);
