@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
-  const [cartTotal, setCartTotal] = useState(0);
+  const [cartTotalQuantity, setCartTotalQuantity] = useState(0);
+  const [cartTotal, setCartTotal] = useState(0.00);
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -19,16 +20,26 @@ const Cart = () => {
             setCartItems(cart.data.items);
           } catch (itemsError) {
             console.error('Failed to fetch cartitems', itemsError);
-            setCartTotal([]);
+            setCartTotalQuantity([]);
           }
           
           try {
-            const cartTotalResponse = await axios.get(
+            const cartTotalQuantityRes = await axios.get(
               `http://localhost:8000/cart/${cartId}/getTotalQuantity`
             );
-            setCartTotal(cartTotalResponse.data);
+            setCartTotalQuantity(cartTotalQuantityRes.data);
+          } catch (cartTotalQuantityError) {
+            console.error('Failed to get cart total', cartTotalQuantityError);
+            setCartTotalQuantity(0);
+          }
+
+          try {
+            const cartTotalRes = await axios.get(
+              `http://localhost:8000/cart/${cartId}/get-cart-total`
+            );
+            setCartTotal(cartTotalRes.data);
           } catch (cartTotalError) {
-            console.error('Failed to get cart total', cartTotalError);
+            console.error('Failed to get cart total: ', cartTotalError);
             setCartTotal(0);
           }
         }
@@ -40,7 +51,7 @@ const Cart = () => {
 
   return (
     <div>
-      <div className="text-xl">Cart - Total Items: {cartTotal}</div>
+      <div className="text-xl">Cart - Total Items: {cartTotalQuantity}</div>
       {cartItems.length > 0 ? (
         <>
           {cartItems.map((item) => (
@@ -54,7 +65,7 @@ const Cart = () => {
             </div>
           ))}
           <div>
-            Grand Total: ${cartTotal}
+            Cart Total: ${cartTotal}
           </div>
         </>
       ) : (
