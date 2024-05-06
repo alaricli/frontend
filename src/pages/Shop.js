@@ -23,13 +23,13 @@ const Shop = ({ products }) => {
         {products.map((product) => (
           <div
             key={product.id}
-            className="w-96 h-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+            className="w-48 h-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
             <Link href={`/product/${product.id}`} passHref>
               <img
                 src={product.picUrl}
                 alt={product.name}
-                className="w-96 h-96 object-contain rounded-t-lg"
+                className="w-48 h-48 object-contain rounded-t-lg"
               />
             </Link>
 

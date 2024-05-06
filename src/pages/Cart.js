@@ -60,6 +60,7 @@ const Cart = () => {
       ) : (
         <p>Your cart is empty</p>
       )}
+      {/* send cart data into checkout */}
       <Link href={'/Checkout'} className="text-white">
         Checkout
       </Link>
