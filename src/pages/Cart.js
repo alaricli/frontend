@@ -58,7 +58,7 @@ const Cart = () => {
             <div key={item.id} className="mb-4">
               <h3>Product: {item.productName}</h3>
               <p>Size: {item.size}</p>
-              {/* TODO: scale it so you can change the quantity here */}
+              {/* TODO: quantity button can be updated in cart/checkout */}
               <p>Quantity: {item.quantity}</p>
               <p>Price: {item.price}</p>
               <p>Total: ${(item.quantity * item.price).toFixed(2)}</p>
@@ -71,7 +71,7 @@ const Cart = () => {
       ) : (
         <p>Your cart is empty</p>
       )}
-      {/* send cart data into checkout */}
+      {/* TODO: send cart data into checkout */}
       <Link href={'/Checkout'} className="text-white">
         Checkout
       </Link>
