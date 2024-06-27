@@ -49,6 +49,20 @@ const Cart = () => {
     fetchCartData();
   }, []);
 
+  const handleDeleteItem = async (cartItemId) => {
+    const cartId = localStorage.getItem('cartId');
+    if (cartId) {
+      try {
+        await axios.delete(
+          `http://localhost:8000/cart/${cartId}/delete/${cartItemId}`
+        );
+        window.location.reload();
+      } catch (deleteError) {
+        console.error('Failed to delete cart item', deleteError);
+      }
+    }
+  };
+
   return (
     <div>
       <div className="text-xl">Cart - Total Items: {cartTotalQuantity}</div>
@@ -57,6 +71,12 @@ const Cart = () => {
           {cartItems.map((item) => (
             <div key={item.id} className="mb-4">
               <h3>Product: {item.productName}</h3>
+              <button
+                onClick={() => handleDeleteItem(item.id)}
+                className="bg-red-500 text-white px-4 py-2"
+              >
+                Remove
+              </button>
               <p>Size: {item.size}</p>
               {/* TODO: quantity button can be updated in cart/checkout */}
               <p>Quantity: {item.quantity}</p>
@@ -64,9 +84,7 @@ const Cart = () => {
               <p>Total: ${(item.quantity * item.price).toFixed(2)}</p>
             </div>
           ))}
-          <div>
-            Cart Total: ${cartTotal}
-          </div>
+          <div>Cart Total: ${cartTotal}</div>
         </>
       ) : (
         <p>Your cart is empty</p>

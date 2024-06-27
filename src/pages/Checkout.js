@@ -1,3 +1,4 @@
+import AddressForm from "@/components/AddressForm";
 import CheckoutForm from "@/components/CheckoutForm";
 import { Elements, useElements, useStripe } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js";
@@ -19,12 +20,18 @@ function Checkout() {
       })
       .catch(error => {
         console.error("Error creating payment intent", error);
-      });
+      }); 
   }, []);
 
   const options = {
     clientSecret,
-    appearance: { theme: 'stripe' },
+    appearance: {
+      theme: 'stripe',
+    },
+    layout: {
+      type: 'tabs',
+      defaultCollapsed: false,
+    },
   };
 
   if (!clientSecret) {
@@ -37,6 +44,7 @@ function Checkout() {
     <Elements stripe={stripePromise} options={options}>
       <div className="bg-gray-800 p-8 rounded-lg max-w-md mx-auto mt-10 text-white">
         <h1 className="text-2xl font-semibold mb-6">Checkout</h1>
+        <AddressForm />
         <CheckoutForm />
       </div>
     </Elements>
